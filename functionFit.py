@@ -9,52 +9,54 @@ from matplotlib.ticker import MultipleLocator, FormatStrFormatter, FixedLocator 
 
 #rc('font', family='Consolas')
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter, FixedLocator
-NazwaPliku= "polySilowstress.txt"
-Dane=[] #empty table
-Dane=np.loadtxt(NazwaPliku)
-Dane=Dane[np.argsort(Dane[:,2])]
-print Dane
-Xex=Dane[:, 2]
 
-Yex=Dane[:, 3]
+def main():
+    names=[]
+    names.append("polySilowstress.txt")
+    for name in names:
+        a=fit_parameters(name)
+        print(a.Xex)
+        a.perform_fitting()
+        a.plot()
+class fit_parameters:
 
-def fit_function1(x,loc_par,gamma,height,offset):
-	return height*gamma**2/((x-loc_par)**2+gamma**2)+offset
+    def __init__(self,name):
+        self.name=name
+        self.Dane=[]
+        self.Xex=[]
+        self.Yex=[]
+        self.popt=[]
+        self.pcov=[]
+        self.Xfit=[]
+        self.Yfit=[]
 
-def fit_function(x,amplitude,sigmaf,mi,offset):
-	return amplitude*np.exp(-(x-mi)**2/2./sigmaf**2)+offset
-	
-print(len(Xex))
-Xbool=(Xex<600)*(Xex>400)
-Xfit=Xex[Xbool]
-Yfit=Yex[Xbool]
-print "to jest  len(Dane[Xbool])",len(Dane[Xbool])
-n=len(Dane[Xbool])
-print "N jest ", n
+        self.Dane=np.loadtxt(name)
+        self.Dane=self.Dane[np.argsort(self.Dane[:,2])]
+        self.Xex=self.Dane[:, 2]
+        self.Yex=self.Dane[:, 3]
 
-mean=sum(Xfit)/n
-sigmal=math.sqrt(sum((Xfit-mean)**2)/n)
-gammal=1/(math.pi*max(Yfit))
-print "to jest mean,sigma,gammal",mean,sigmal,gammal
-#print "to jest xfit", Xfit, Yfit
-#popt,pcov=curve_fit(fit_function,Xfit,Yfit,p0=[max(Yfit),mean,sigmal,0])
-popt,pcov=curve_fit(fit_function,Xfit,Yfit,p0=[max(Yfit),sigmal, mean, 0]) #może można coś z offsetem pokombinować, ale nie wiem, czy tutaj to potrzebne
-popt1,pcov1=curve_fit(fit_function1,Xfit,Yfit,p0=[mean,sigmal,max(Yfit),0])
-amplitude_fit,sigma_fit,mi_fit,offset_fit=popt
-loc_par_fit,gamma_fit,height_fit,offset1_fit=popt1
+    def fit_function(self,x,loc_par,gamma,height,offset):
+        return height*gamma**2/((x-loc_par)**2+gamma**2)+offset
 
-print popt
+    def perform_fitting(self):
+        Xbool=(self.Xex<600)*(self.Xex>400)
+        self.Xfit=self.Xex[Xbool]
+        self.Yfit=self.Yex[Xbool]
+        n=len(self.Dane[Xbool])
 
+        mean=sum(self.Xfit)/n #loc_par
+        sigmal=math.sqrt(sum((self.Xfit-mean)**2)/n)
 
-plt.title(u"Lorenz function fit")
-plt.plot(Xex,Yex,"o",label="dane z pliku",color="c")
-plt.plot(Xfit,fit_function1(Xfit,loc_par_fit,gamma_fit,height_fit, offset1_fit),linewidth="3.0",color="m",label='fit')
+        self.popt,self.pcov=curve_fit(self.fit_function,self.Xfit,self.Yfit,p0=[mean,sigmal,max(self.Yfit),0])
+        #NAJWAZNIEJSZA LINIJKA
+        loc_par_fit,gamma_fit,height_fit,offset1_fit=self.popt
+    def plot(self):
+        plt.title(u"Lorenz function fit")
+        plt.plot(self.Xex,self.Yex,"o",label="dane z pliku",color="c")
+        plt.plot(self.Xfit,self.fit_function(self.Xfit,self.popt[0],self.popt[1],self.popt[2], self.popt[3]),linewidth="3.0",color="m",label='fit')
+        plt.legend()
+        plt.text(100, 20200, r'$\ x_0= %.3f,\u0263 = %.3f$' %(self.popt[0], math.fabs(self.popt[1])))
+        #plt.savefig(name+".png", bbox_inches='tight')
+        plt.show()
 
-gamma_abs=math.fabs(gamma_fit)
-#plt.plot(Xfit,fit_function(Xfit,amplitude_fit,sigma_fit,mi_fit, offset_fit),label='fit')
-plt.legend()
-plt.text(100, 20200, r'$\ x_0= %.3f,\u0263 = %.3f$' %(loc_par_fit, gamma_abs))
-#czy nie trzeba dac tutaj Xfit???
-plt.savefig("Lorentz_fit.png", bbox_inches='tight')
-plt.show()
-
+main()
