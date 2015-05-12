@@ -3,10 +3,12 @@ import tkMessageBox as mb
 
 def DlaRafalaAkcja():
     okno=mb.showinfo(title='Czesc Rafalku', message='co slychac? fajny guziczek, nie? :P')
-
+#SWEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEET
 def DlaMonikiAkcja():
     if DlaMoniki.get()=='Monika':
         okno1=mb.showinfo(title='Czesc Monisiu', message='co slychac? fajne poletko tekstowe, nie? :P')
+    elif DlaMoniki.get()=='Wojtek':
+        okno3=mb.showinfo(title='Czesc Wojtusiu', message='ladny zrobiles guziczek, nie? :P')
     else:
         okno2=mb.showinfo(title='Czesc', message='Nie jestes Monika!!!')
 
