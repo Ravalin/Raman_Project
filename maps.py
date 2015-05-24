@@ -6,11 +6,17 @@ def main():
     #PRZYKLADOWE DANE DLA JEDNEGO PARAMETRU
     #W KAZDEJ LISCIE SA DANE Z JEDNEGO "WIERSZA" PROBKI
     data=([10.0,3.9,3.0,6.8,7.5],
-          [1.8,5.9,3.4,7.5,5.0])
+          [1.8,5.9,13.4,7.5,5.0])
     #TE DWIE (TRZY?) WARTOSCI POWINIEN PODAWAC UZYTKOWNIK
     umin=0
     umax=10
     av_norm=0.5
+    #OPCJONALNY KOD DO WYLICZANIA UMIN I UMAX
+    # for i in data:
+    #     if umin>min(i):
+    #         umin=min(i)
+    #     if umax<max(i):
+    #         umax=max(i)
     try:
         #av_norm=middle_point(data)
         make_map(data,umin,umax,av_norm)
