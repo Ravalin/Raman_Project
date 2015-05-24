@@ -1,3 +1,4 @@
+#from numpy.core.tests.test_unicode import assign_values
 from pylab import *
 import matplotlib.colors
 #GLOWNA FUNKCJA, PEWNIE DA RADE TO ROZWIAZAC W BARDZIEJ ELEGANCKI SPOSOB
@@ -16,20 +17,22 @@ def main():
     except ValueError:
         print("ValueError!")
         exit(1)
-#FUNKCJA ZNAJDUJACA SREDNIA/DLUGOSC TABLICY
-#WARTOSC TA DAJE NAM SRODEK NA PASKU KOLORU
+#WARTOSC PONIZEJ DAJE NAM SRODEK NA PASKU KOLORU
 def middle_point(data):
         av_norm=0.5
-        av_data=average(data)
-        length=0
+        av_data=0
         for i in data:
-            for j in i:
-                length+=1
-        if length !=0:
-            av_norm=av_data/length
-            return av_norm
+             av_data+=average(i)
+        av_data=av_data/len(data)
+        largest=0
+        if len(data)>0:
+            for i in data:
+                if largest<max(i):
+                    largest=max(i)
+            av_norm=av_data/largest
         else:
             return None
+        return av_norm
 def make_map(data,vmin=0.0,vmax=1.0,av=0.5):
     data_array=np.array(data)
     #USTAWIENIE KOLOROWANIA
@@ -46,5 +49,6 @@ def make_map(data,vmin=0.0,vmax=1.0,av=0.5):
     my_cmap = matplotlib.colors.LinearSegmentedColormap('my_colormap',cdict,256)
     pcolor(data_array,cmap=my_cmap,vmin=vmin,vmax=vmax)
     colorbar()
+    savefig('wykres.png');
 #URUCHOMIENIE PROGRAMU
 main()
