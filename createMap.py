@@ -54,12 +54,6 @@ def createMap(name, minimum, maximum):
         npocz+=1
     f.close()
 
-    #print(mean)
-    try:
-        av_norm=maps1.middle_point(mean)
-        maps1.make_map(mean,maps1.minimum(mean),maps1.maximum(mean),0.5) #rysowanie mapy
-    except ValueError:
-        print("ValueError!")
-        exit(1)
+    return mean
 
-createMap("polySilowstress.txt", 400, 600)
+
