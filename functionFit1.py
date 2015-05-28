@@ -35,3 +35,4 @@ def perform_fitting(RamanShift, Intensity, MaxRamanShift, MinRamanShift):
         #plt.savefig(name+".png", bbox_inches='tight')
     #plt.show()
     return popt
+
