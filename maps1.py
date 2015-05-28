@@ -31,7 +31,7 @@ def maximum(data):
                 maximal=j
     return maximal
 
-def make_map(data,vmin=0.0,vmax=1.0,av=0.5):
+def make_map(data,vmin=0.0,vmax=1.0,av=0.5,):
     data_array=np.array(data)
     #USTAWIENIE KOLOROWANIA
     cdict = {'red': ((0.0, 0.0, 0.0),
@@ -47,4 +47,6 @@ def make_map(data,vmin=0.0,vmax=1.0,av=0.5):
     my_cmap = matplotlib.colors.LinearSegmentedColormap('my_colormap',cdict,256)
     pcolor(data_array,cmap=my_cmap,vmin=vmin,vmax=vmax)
     colorbar()
-    show()
+    #show()
+    #savefig("Map.png")
+
