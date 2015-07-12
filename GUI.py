@@ -1,23 +1,24 @@
 import Tkinter as tk
 import tkMessageBox as mb
 import numpy as np
-from Tkinter import *
 import createMap as cM
 from pylab import *
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import maps1
+from matplotlib import cm
+
 
 def map():
-    f=Figure()
-    a=f.add_subplot(1,1,1)
+
     data=cM.createMap(NazwaPlikutxt.get(), int (wartpocztxt.get()), int (wartkonctxt.get()))
     data_array=np.array(data)
     av=0.5
-    cdict = {'red': ((0.0, 0.0, 0.0),
+    a=f.add_subplot(1,1,1)
+    cdict = {'red': ((0.0, 0.0, av),
                      (av, 1.0, 1.0),
                       (1.0, 0.0, 0.0)),
-              'green': ((0.0, 0.0, av),
+              'green': ((0.0, 0.0, 0.0),
                           (av, 1.0, 1.0),
                           (1.0, av, 0.0)),
                'blue': ((0.0, 0.0, 0.0),
@@ -25,16 +26,19 @@ def map():
                         (1.0, 0.0, 0.0))}
     #UTWORZENIE MAPY I PLIKU GRAFICZNEGO
     my_cmap = matplotlib.colors.LinearSegmentedColormap('my_colormap',cdict,256)
-    b=a.pcolor(data_array,cmap=my_cmap,vmin=maps1.minimum(data),vmax=maps1.maximum(data))
+    b=a.pcolor(data_array,cmap='jet' ,vmin=maps1.minimum(data),vmax=maps1.maximum(data)) #inne fajne cmap'y do wyboru: 'seismic' , 'coolwarm'
     f.colorbar(b)
     canvas = FigureCanvasTkAgg(f, master=GUI)
     canvas.get_tk_widget().place(x=0, y=0)
 
-
 GUI=tk.Tk()
 
-GUI.geometry('900x500')
+GUI.geometry('900x505')
 GUI.title("RamanMaps")
+
+f=Figure()
+canvas = FigureCanvasTkAgg(f, master=GUI)
+canvas.get_tk_widget().place(x=0, y=0)
 
 NazwaPliku=tk.Label(text='File name:')
 NazwaPliku.place(x=680, y=10)
@@ -55,6 +59,8 @@ wartkonctxt.place(x=680, y=130)
 wartkonctxt.insert(0, "600")
 
 mapuj = tk.Button(text='Create map', command=map).place(x=680, y=300)
+
+
 
 GUI.mainloop()
 
