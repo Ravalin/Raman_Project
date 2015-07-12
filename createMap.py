@@ -28,11 +28,11 @@ def createMap(name, minimum, maximum):
         elif Y[nkoncowe]!=yactual: #patrze tylko czy y sie zmienia, zmiane x-a sprawdzam pozniej
             yactual=Y[nkoncowe]
             parametry=functionFit1.perform_fitting(RamanShift[npocz:nkoncowe-1], Intensity[npocz:nkoncowe-1], maximum, minimum)
-            f = open((str(nx)+"."+str(ny)+".txt"),"w")
-            while(npocz<nkoncowe): #zapisywanie do pliku
-                f.write(str(X[npocz])+"\t"+str(Y[npocz])+"\t"+str(RamanShift[npocz])+"\t"+str(Intensity[npocz])+"\n")
-                npocz+=1
-            f.close()
+            #f = open((str(nx)+"."+str(ny)+".txt"),"w")
+            #while(npocz<nkoncowe): #zapisywanie do pliku
+                #f.write(str(X[npocz])+"\t"+str(Y[npocz])+"\t"+str(RamanShift[npocz])+"\t"+str(Intensity[npocz])+"\n")
+                #npocz+=1
+            #f.close()
             mean[nx].append(parametry[0])
             if X[nkoncowe]!=xactual: #jesli x tez sie zmienil to zmieniam wspolrzedna x-owa i zeruje y-owa
                 nx+=1
@@ -43,16 +43,16 @@ def createMap(name, minimum, maximum):
             else:   #jesli x sie nie zmienil - zmieniam tylko wspolrzedna y-owa
                 ny+=1
                 yactual=Y[nkoncowe]
-            npocz+=1    #npocz staje sie dawnym n koncowym - poczatek nastepnego zakresu
+            npocz=nkoncowe    #npocz staje sie dawnym n koncowym - poczatek nastepnego zakresu
             nkoncowe+=1
 
-    f = open((str(nx)+"."+str(ny)+".txt"),"w") #ostatni zakres trzeba rozpatrzyc osobno
+    #f = open((str(nx)+"."+str(ny)+".txt"),"w") #ostatni zakres trzeba rozpatrzyc osobno
     parametry=functionFit1.perform_fitting(RamanShift[npocz:nkoncowe-1], Intensity[npocz:nkoncowe-1], maximum, minimum)
     mean[nx].append(parametry[0])
-    while(npocz<nkoncowe):
-        f.write(str(X[npocz])+"\t"+str(Y[npocz])+"\t"+str(RamanShift[npocz])+"\t"+str(Intensity[npocz])+"\n")
-        npocz+=1
-    f.close()
+    #while(npocz<nkoncowe):
+        #f.write(str(X[npocz])+"\t"+str(Y[npocz])+"\t"+str(RamanShift[npocz])+"\t"+str(Intensity[npocz])+"\n")
+       # npocz+=1
+    #f.close()
 
     return mean
 
